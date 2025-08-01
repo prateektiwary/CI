@@ -21,8 +21,8 @@ pipeline {
                      sh " sonar-scanner \
                             -Dsonar.projectKey=jenkins \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url=http://34.27.16.28:9000 \
-                            -Dsonar.login=sqp_fd027497522210783d83ef3f112ea060adaf9fed"
+                            -Dsonar.host.url=http://34.61.41.215:9000 \
+                            -Dsonar.login=squ_89bd28d59c0d2aeb93f48b7fac561948c8664f2f"
                }
         }
         }
