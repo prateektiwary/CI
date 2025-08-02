@@ -70,7 +70,7 @@ pipeline {
         stage('Push Docker Image to Artifact Registry') {
              steps {
                 script {
-                    sh 'docker push us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest '
+                    sh 'docker push us-docker.pkg.dev/oval-cyclist-426414-p0/myrepo/java2:latest '
                 }
             }
         }
