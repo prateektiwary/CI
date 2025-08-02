@@ -62,7 +62,7 @@ pipeline {
                     // Authenticate Docker to GCR using the service account key
                     
                     sh 'gcloud auth configure-docker \
-                        us-docker.pkg.dev'
+                        us-central1-docker.pkg.dev'
                     //sh "gcloud auth configure-docker"
                 }
             }
@@ -70,7 +70,7 @@ pipeline {
         stage('Push Docker Image to Artifact Registry') {
              steps {
                 script {
-                    sh 'docker push us-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest '
+                    sh 'docker push us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest '
                 }
             }
         }
