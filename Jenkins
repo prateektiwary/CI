@@ -36,7 +36,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                 sh "docker build -t us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest ."
+                 sh "docker build -t us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 ."
                  // sh "docker build -t olinapache ."
                 }
             }
@@ -44,7 +44,7 @@ pipeline {
         stage('Trivy Image scanning') {
             steps {
                 script {
-                 sh "trivy image us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest "
+                 sh "trivy image us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 "
                 }
             }
         }
@@ -83,7 +83,7 @@ stage('Authenticate to GCP') {
         stage('Push Docker Image to Artifact Registry') {
              steps {
                 script {
-                    sh 'docker push us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest '
+                    sh 'docker push us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 '
                 }
             }
         }
