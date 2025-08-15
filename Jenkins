@@ -74,7 +74,7 @@ pipeline {
                         echo "Activating service account..."
                         gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
                         gcloud auth print-access-token \
-| docker login - u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev
+| docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev
                     '''
                 }
             }
