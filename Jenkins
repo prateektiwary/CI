@@ -87,7 +87,8 @@ stage('Authenticate to GCP') {
                 }
             }
         }
-post {
+stage{
+    post {
         success {
             // Actions to take if the pipeline succeeds
             echo 'Pipeline succeeded!'
