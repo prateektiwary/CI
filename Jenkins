@@ -4,10 +4,10 @@ pipeline {
         maven 'maven'
     }
     environment {
-        SCANNER_HOME=tool 'sonar-scanner'
+        SCANNER_HOME = tool 'sonar-scanner'
         PROJECT_ID = 'bustling-theme-463509-j8'
     }
-    
+
     stages {
         stage('git clone') {
             steps {
@@ -15,36 +15,36 @@ pipeline {
                 git url: 'https://github.com/prateektiwary/java-maven-app.git', branch: 'main'
             }
         }
-        stage("sonarqube analysis"){
-           steps{
-                withSonarQubeEnv("sonar-server"){     
-                     sh " sonar-scanner \
+        stage('sonarqube analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh " sonar-scanner \
                             -Dsonar.projectKey=jenkins \
                             -Dsonar.sources=. \
                             -Dsonar.host.url=http://34.61.41.215:9000 \
                             -Dsonar.login=squ_89bd28d59c0d2aeb93f48b7fac561948c8664f2f"
-               }
+                }
+            }
         }
-        }
-        stage("maven build") {
+        stage('maven build') {
             steps {
                 script {
-                    sh "mvn clean verify"
-                } 
+                    sh 'mvn clean verify'
+                }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                 sh "docker build -t us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 ."
-                 // sh "docker build -t olinapache ."
+                    sh 'docker build -t us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 .'
+                // sh "docker build -t olinapache ."
                 }
             }
         }
         stage('Trivy Image scanning') {
             steps {
                 script {
-                 sh "trivy image us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 "
+                    sh 'trivy image us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 '
                 }
             }
         }
@@ -57,57 +57,58 @@ pipeline {
         //         }
         //  }
         // stage('Authenticate to Artifact Registry') {
-    //         steps {
-    //             script {
-    //                 // Authenticate Docker to GCR using the service account key
-                    
-    //                 sh 'gcloud auth configure-docker \
-    //                     us-central1-docker.pkg.dev'
-    //                 //sh "gcloud auth configure-docker"
-    //             }
-    //         }
-    //     }
-stage('Authenticate to GCP') {
+        //         steps {
+        //             script {
+        //                 // Authenticate Docker to GCR using the service account key
+
+        //                 sh 'gcloud auth configure-docker \
+        //                     us-central1-docker.pkg.dev'
+        //                 //sh "gcloud auth configure-docker"
+        //             }
+        //         }
+        //     }
+        stage('Authenticate to GCP') {
             steps {
                 // Assuming Jenkins has a Service Account JSON key stored as a credential
-                withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) 
+                    {
                     sh '''
                         echo "Activating service account..."
-                        gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project=$PROJECT_ID
-                        gcloud auth print-access-token \
-  | docker login -u oauth2accesstoken --password-stdin us-central1-docker.pkg.dev
+                        gcloud auth activate - service - account--key - file=$GOOGLE_APPLICATION_CREDENTIALS--project = $PROJECT_ID
+                        gcloud auth print - access - token \
+| docker login - u oauth2accesstoken--password - stdin us - central1 - docker.pkg.dev
                     '''
                 }
             }
         }
         stage('Push Docker Image to Artifact Registry') {
-             steps {
+            steps {
                 script {
                     sh 'docker push us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 '
                 }
             }
         }
-stage{
-    post {
-        success {
-            // Actions to take if the pipeline succeeds
-            echo 'Pipeline succeeded!'
-            // You can also send an email notification on success
-            mail to: 'prateektiwarygcp2@gmail.com',
-                 subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
-                 body: "The pipeline ${env.BUILD_URL} has successfully completed."
-        }
-        failure {
-            // Actions to take if the pipeline fails
-            echo 'Pipeline failed!'
-            // You can also send an email notification on failure
-            mail to: 'prateektiwarygcp2@gmail.com',
-                 subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                 body: "The pipeline ${env.BUILD_URL} has failed. Check the logs for details."
+        stage('post'){
+            steps {
+                post {
+                    success {
+                    // Actions to take if the pipeline succeeds
+                    echo 'Pipeline succeeded!'
+                    // You can also send an email notification on success
+                    mail to: 'prateektiwarygcp2@gmail.com',
+                        subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
+                            body: "The pipeline ${env.BUILD_URL} has successfully completed."
+                    }
+                    failure {
+                    // Actions to take if the pipeline fails
+                    echo 'Pipeline failed!'
+                    // You can also send an email notification on failure
+                    mail to: 'prateektiwarygcp2@gmail.com',
+                        subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+                            body: "The pipeline ${env.BUILD_URL} has failed. Check the logs for details."
+                    }
+                }
+            }
         }
     }
-    }
-  }  
-}  
-
-
+}
