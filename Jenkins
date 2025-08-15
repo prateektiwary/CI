@@ -86,10 +86,8 @@ pipeline {
                 }
             }
         }
-        stage('post'){
-            steps {
-                post {
-                    success {
+        post {
+            success {
                     // Actions to take if the pipeline succeeds
                     echo 'Pipeline succeeded!'
                     // You can also send an email notification on success
@@ -97,7 +95,7 @@ pipeline {
                         subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
                             body: "The pipeline ${env.BUILD_URL} has successfully completed."
                     }
-                    failure {
+            failure {
                     // Actions to take if the pipeline fails
                     echo 'Pipeline failed!'
                     // You can also send an email notification on failure
@@ -105,8 +103,6 @@ pipeline {
                         subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
                             body: "The pipeline ${env.BUILD_URL} has failed. Check the logs for details."
                     }
-                }
             }
-        }
     }
 }
