@@ -37,17 +37,16 @@ pipeline {
             steps {
                 script {
                     sh 'docker build -t us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 .'
-                // sh "docker build -t olinapache ."
                 }
             }
         }
-        stage('Trivy Image scanning') {
-            steps {
-                script {
-                    sh 'trivy image us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 '
-                }
-            }
-        }
+        //stage('Trivy Image scanning') {
+        //    steps {
+        //        script {
+        //            sh 'trivy image us-central1-docker.pkg.dev/bustling-theme-463509-j8/myrepo/java2:latest1 '
+        //        }
+        //    }
+        //}
         // stage('Push Docker Image to docker') {
         //     steps {
         //         script {
