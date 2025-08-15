@@ -86,6 +86,7 @@ pipeline {
                 }
             }
         }
+    }
         post {
             success {
                     // Actions to take if the pipeline succeeds
@@ -104,5 +105,5 @@ pipeline {
                             body: "The pipeline ${env.BUILD_URL} has failed. Check the logs for details."
                     }
             }
-    }
+    
 }
